@@ -4,17 +4,21 @@
 
 {% block content %}
 
-<form method="POST">
+<!-- <form method="POST">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Save</button>
+</form> -->
+<form method="post" action="/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="padding: 80px;">
+        <label for="lst_extra_hours" style="width:150px;height: 50px;">Extra Hours</label>
+        <input type="text" name="lst_extra_hours">
+            </br>
+            <label for="startdate" style="width:150px;height: 50px">Start Date</label>
+        <input type="date" name="startdate"></br>
+        <button type="submit", name="save">Apply</button>
+    </div>
 </form>
-<!-- <form method="post" action="/create/" enctype="multipart/form-data"> -->
-    <!-- {% csrf_token %} -->
-   <!-- <label for="name" style="width:150px">Name</label>
-   <input type="text" name="name">
-    <label for="startdate" style="width:150px">Name</label>
-   <input type="date" name="startdate">
-   <button type="submit", name="save">Create new</button> -->
-<!-- </form> -->
+
 {% endblock %}
