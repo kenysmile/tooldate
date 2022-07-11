@@ -25,6 +25,7 @@ def create_tool_date(request):
         time_out = 0
 
         for extra_hours in str(tool_date.lst_extra_hours).split('-'):
+            extra_hours = str(extra_hours).replace(",",".")
             if float(extra_hours) < 8:
                 end_date = start_date
                 time_out_choice = float(extra_hours) + time_out
