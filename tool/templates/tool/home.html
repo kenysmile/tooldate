@@ -12,11 +12,14 @@
 <form method="post" action="/" enctype="multipart/form-data">
     {% csrf_token %}
     <div style="padding: 80px;">
+        <label for="dateoff" style="width:150px;height: 50px">Date Off</label>
+        <input type="text" name="dateoff"></br>
         <label for="lst_extra_hours" style="width:150px;height: 50px;">Extra Hours</label>
-        <input type="text" name="lst_extra_hours" placeholder="1,5-2,5-3,5">
-            </br>
-            <label for="startdate" style="width:150px;height: 50px">Start Date</label>
+        <input type="text" name="lst_extra_hours" placeholder="1,5-2,5-3,5"></br>
+        <label for="startdate" style="width:150px;height: 50px">Start Date</label>
         <input type="text" name="startdate" placeholder="2022-01-01"></br>
+        <label for="sethourswork" style="width:150px;height: 50px">Set Hours Work</label>
+        <input type="text" name="sethourswork"></br>
         <button type="submit", name="save">Apply</button>
     </div>
 </form>

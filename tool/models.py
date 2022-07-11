@@ -9,6 +9,8 @@ class ToolDate(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField()
     lst_extra_hours = models.CharField(max_length=50)
+    date_off = models.IntegerField(null=True)
+    set_hours_work = models.FloatField(null=True)
 
     def __str__(self):
         return f"{self.tool_date_id}"

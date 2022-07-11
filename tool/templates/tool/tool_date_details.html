@@ -9,7 +9,6 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <td>ID</td>
             <td>Extra Hours</td>
             <td>Start Date</td>
             <td>End Date</td>
@@ -19,7 +18,6 @@
     <tbody>
         {% for tool_date in tool_date_details %}
             <tr>
-                <td>{{ tool_date.pk }}</td>
                 <td>{{ tool_date.extra_hours }}</td>
                 <td>{{ tool_date.start_date }}</td>
                 <td>{{ tool_date.end_date }}</td>

@@ -33,6 +33,8 @@ def create_tool_date(request):
                     days = float(time_out_choice)//8
                     time_out_choice = (float(time_out_choice) % 8)
                     end_date = start_date  + timedelta(days=days)
+                else:
+                    time_out_choice = 0
             else:
                 days = float(extra_hours)//8
                 time_out_choice = (float(extra_hours) % 8) + time_out
