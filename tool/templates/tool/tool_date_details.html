@@ -1,0 +1,54 @@
+{% extends "tool/base.html" %}
+
+{% block title %} Create New List {% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Extra Hours</td>
+            <td>Start Date</td>
+            <td>End Date</td>
+            <td>Time Out</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tool_date in tool_date_details %}
+            <tr>
+                <td>{{ tool_date.pk }}</td>
+                <td>{{ tool_date.extra_hours }}</td>
+                <td>{{ tool_date.start_date }}</td>
+                <td>{{ tool_date.end_date }}</td>
+                <td>{{ tool_date.time_out }}</td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+<!-- <div class="card-columns">
+    {% for tool_date in tool_date_details %}
+    <div class="card" style="width: 18rem; float: left">
+      <div class="card-body">
+          <h5 class="card-title">{{ tool_date.extra_hours }}</h5>
+          <p class="card-text">{{ tool_date.start_date }}</p>
+          <div class="card-footer bg-transparent border-dark">
+            <p class="card-title">{{ tool_date.end_date }}</p>
+          </div>
+      </div>
+    </div>
+    
+    {% endfor %}
+</div> -->
+<!-- <ul>
+    {% for tool_date in tool_date_details %}
+            <li>{{ tool_date.name }}</li>
+            <li>{{ tool_date.start_date }}</li>
+
+            <li>{{ tool_date.end_date }}</li>
+            <li>{{ tool_date.extra_hours }}</li>
+
+        </a>
+    {% endfor %}
+</ul> -->
+{% endblock %}
