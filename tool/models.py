@@ -1,5 +1,6 @@
 from pyexpat import model
 from django.db import models
+from django.conf import settings
 
 
 # Create your models here.
@@ -15,7 +16,6 @@ class ToolDate(models.Model):
     def __str__(self):
         return f"{self.tool_date_id}"
 
-
 class ToolDateDetails(models.Model):
     tool_date_details_id = models.AutoField(primary_key=True)
     tool_date = models.ForeignKey(ToolDate, on_delete=models.CASCADE)
@@ -24,6 +24,7 @@ class ToolDateDetails(models.Model):
     end_date = models.DateField()
     extra_hours = models.FloatField()
     time_out = models.FloatField()
-    
+    weekday = models.IntegerField()
+
     def __str__(self):
         return self.name

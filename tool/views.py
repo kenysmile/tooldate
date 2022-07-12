@@ -1,5 +1,7 @@
+from lib2to3.pytree import convert
 from socket import timeout
 from django.shortcuts import render, redirect
+from urllib3 import HTTPResponse
 from .forms import TooldateForm
 from .models import ToolDate, ToolDateDetails
 from datetime import date, datetime, timedelta
@@ -11,6 +13,9 @@ def tool_date_details(request, pk):
     tool_date_details = ToolDateDetails.objects.filter(tool_date=pk)
     return render(request, 'tool/tool_date_details.html', {'tool_date_details': tool_date_details})
 
+def simple_function(request):
+    print('ok')
+    return HTTPResponse("return this string")
 def create_tool_date(request):
     if request.method == 'GET':
         form = TooldateForm()
@@ -23,7 +28,6 @@ def create_tool_date(request):
         convert_start_date = datetime.strptime(tool_date.start_date, '%Y-%m-%d')
         start_date = convert_start_date
         time_out = 0
-
         for extra_hours in str(tool_date.lst_extra_hours).split('-'):
             extra_hours = str(extra_hours).replace(",",".")
             if float(extra_hours) < 8:
@@ -39,10 +43,14 @@ def create_tool_date(request):
                 days = float(extra_hours)//8
                 time_out_choice = (float(extra_hours) % 8) + time_out
                 end_date = start_date  + timedelta(days=days)
+            weekday = start_date.weekday()
+            if weekday in [5, 6]:
 
+                end_date += timedelta(days=2)
             tool_date_details = ToolDateDetails.objects.create(tool_date=tool_date, name=tool_date.pk, 
                                                    start_date=start_date, end_date=end_date,
-                                                   extra_hours=extra_hours, time_out=time_out_choice    
+                                                   extra_hours=extra_hours, time_out=time_out_choice,
+                                                   weekday=weekday    
                                                             )
             time_out = time_out_choice
             start_date = end_date   
