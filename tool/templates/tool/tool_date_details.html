@@ -20,7 +20,7 @@
         {% for tool_date in tool_date_details %}
             <tr>
                 <td>{{ tool_date.extra_hours }}</td>
-                <td>{{ tool_date.start_date|date:"Y/m/d" }}</td>
+                <td class="start_date">{{ tool_date.start_date|date:"Y/m/d" }}</td>
                 <td class="end_date">{{ tool_date.end_date|date:"Y/m/d" }}</td>
                 <td >{{ tool_date.time_out }}</td>
                 <td>{{ tool_date.weekday }}</td>
@@ -28,10 +28,17 @@
         {% endfor %}
     </tbody>
 </table>
-    <button id="date-btn" class="btn">Do it </button>
+    <button id="start-date-btn" class="oe_highlight">Start Date </button>
+    <button id="end-date-btn" class="oe_highlight">End Date</button>
 
 <script>
-    document.getElementById("date-btn").addEventListener('click', ()=>{
+    document.getElementById("start-date-btn").addEventListener('click', ()=>{
+       const x = Array.from(document.getElementsByClassName("start_date")).map((i)=>{
+        return i.innerHTML
+       })
+       navigator.clipboard.writeText(x.join('\n'));
+    })
+    document.getElementById("end-date-btn").addEventListener('click', ()=>{
        const x = Array.from(document.getElementsByClassName("end_date")).map((i)=>{
         return i.innerHTML
        })
