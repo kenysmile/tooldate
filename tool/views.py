@@ -1,10 +1,13 @@
 from lib2to3.pytree import convert
+from logging import exception
 from socket import timeout
 from django.shortcuts import render, redirect
 from urllib3 import HTTPResponse
 from .forms import TooldateForm
 from .models import ToolDate, ToolDateDetails
 from datetime import date, datetime, timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, 'tool/home.html', {})
@@ -28,6 +31,10 @@ def create_tool_date(request):
         
         tool_date = ToolDate.objects.create(lst_extra_hours=lst_extra_hours, start_date=start_date)
         convert_start_date = datetime.strptime(tool_date.start_date, '%Y-%m-%d')
+        weekday = convert_start_date.weekday()
+        if weekday in [5, 6]:
+            print('ok')
+            logger.info('11111111111111')
         start_date = convert_start_date
         time_out = 0
         for extra_hours in str(tool_date.lst_extra_hours).split('-'):
