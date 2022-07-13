@@ -22,14 +22,12 @@ def create_tool_date(request):
         form = TooldateForm()
         return render(request, 'tool/home.html', {'form': form})
     else:
-        set_hours_work = 8
         form = TooldateForm(request.POST)
         lst_extra_hours = request.POST['lst_extra_hours']
         start_date = request.POST['startdate']
-        if request.POST['sethourswork']:
-            set_hours_work = request.POST['sethourswork']
-        tool_date = ToolDate.objects.create(lst_extra_hours=lst_extra_hours, start_date=start_date)
-        convert_start_date = datetime.strptime(tool_date.start_date, '%Y/%m/%d')
+        set_hours_work = request.POST['sethourswork']
+        tool_date = ToolDate.objects.create(lst_extra_hours=lst_extra_hours, start_date=str(start_date).replace('/','-'))
+        convert_start_date = datetime.strptime(tool_date.start_date, '%Y-%m-%d')
         start_date = convert_start_date
         time_out = 0
         for extra_hours in str(tool_date.lst_extra_hours).split('-'):
@@ -60,3 +58,5 @@ def create_tool_date(request):
             start_date = end_date   
               
         return redirect('tool_date_details', pk=tool_date.pk)
+
+
