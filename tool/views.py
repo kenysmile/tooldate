@@ -6,8 +6,6 @@ from urllib3 import HTTPResponse
 from .forms import TooldateForm
 from .models import ToolDate, ToolDateDetails
 from datetime import date, datetime, timedelta
-import logging
-logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, 'tool/home.html', {})
@@ -24,17 +22,14 @@ def create_tool_date(request):
         form = TooldateForm()
         return render(request, 'tool/home.html', {'form': form})
     else:
+        set_hours_work = 8
         form = TooldateForm(request.POST)
         lst_extra_hours = request.POST['lst_extra_hours']
         start_date = request.POST['startdate']
-        set_hours_work = request.POST['sethourswork']
-        
+        if request.POST['sethourswork']:
+            set_hours_work = request.POST['sethourswork']
         tool_date = ToolDate.objects.create(lst_extra_hours=lst_extra_hours, start_date=start_date)
-        convert_start_date = datetime.strptime(tool_date.start_date, '%Y-%m-%d')
-        weekday = convert_start_date.weekday()
-        if weekday in [5, 6]:
-            print('ok')
-            logger.info('11111111111111')
+        convert_start_date = datetime.strptime(tool_date.start_date, '%Y/%m/%d')
         start_date = convert_start_date
         time_out = 0
         for extra_hours in str(tool_date.lst_extra_hours).split('-'):
@@ -65,7 +60,3 @@ def create_tool_date(request):
             start_date = end_date   
               
         return redirect('tool_date_details', pk=tool_date.pk)
-
-            
-
-
