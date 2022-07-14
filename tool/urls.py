@@ -6,5 +6,4 @@ urlpatterns = [
     path('', views.create_tool_date, name='create_tool_date'),
     # path('', views.create, name='create'),
     path('<int:pk>', views.tool_date_details, name='tool_date_details'),
-    path('simpe_function/', views.simple_function, name='simpe_function')
 ]
