@@ -44,16 +44,23 @@ def create_tool_date(request):
                     else:
                         end_date += timedelta(days=days)
                 else:
-                    time_out_choice = -(float(set_hours_work) - time_out - float(extra_hours))
-                    if weekday == 4:
-                        end_date += timedelta(days=3)
+                    # print(extra_hours)
+                    # print(set_hours_work)
+                    # print(time_out)
+                    # time_out_choice = -(float(set_hours_work) - float(extra_hours))
+                    if float(extra_hours) + float(extra_hours_save) >= float(set_hours_work):
+                        end_date += timedelta(days=1)
+                        if weekday == 4:
+                            end_date += timedelta(days=2)
+                        extra_hours_save = (float(extra_hours) + float(extra_hours_save)) - float(set_hours_work)
                     else:
-                        if float(extra_hours) + float(extra_hours_save) >= float(set_hours_work):
-                            extra_hours_save = float(set_hours_work) + float(time_out_choice)
-                            end_date += timedelta(days=1)
-                        else:
-                            extra_hours_save = float(set_hours_work) + float(time_out_choice)
-
+                        # time_out_choice = 
+                        time_out_choice = -((float(set_hours_work) - time_out - float(extra_hours)))
+                        if -(time_out_choice) > float(float(set_hours_work)):
+                            print(extra_hours)
+                            print(time_out_choice)
+                            time_out_choice = -((-(time_out_choice)) % float(set_hours_work))
+                        extra_hours_save += float(extra_hours)
             else:
                 days = float(extra_hours)//float(set_hours_work)
                 time_out_choice = (float(extra_hours) % float(set_hours_work)) + time_out
@@ -76,7 +83,7 @@ def create_tool_date(request):
             tool_date_details = ToolDateDetails.objects.create(tool_date=tool_date, name=tool_date.pk, 
                                                    start_date=start_date, end_date=end_date,
                                                    extra_hours=extra_hours, time_out=time_out_choice,
-                                                   weekday=weekday
+                                                   weekday=weekday, extra_hours_save=extra_hours_save
                                                             )
             extra_hours_save = float(extra_hours_save) 
             time_out = time_out_choice

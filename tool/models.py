@@ -25,6 +25,6 @@ class ToolDateDetails(models.Model):
     extra_hours = models.FloatField()
     time_out = models.FloatField()
     weekday = models.IntegerField()
-
+    extra_hours_save = models.FloatField()
     def __str__(self):
         return self.name
