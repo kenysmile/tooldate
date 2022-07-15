@@ -44,33 +44,27 @@ def create_tool_date(request):
                     else:
                         end_date += timedelta(days=days)
                 else:
-                    time_out_choice = -(float(set_hours_work) % float(extra_hours)) + time_out
+                    time_out_choice = -(float(set_hours_work) - time_out - float(extra_hours))
                     if weekday == 4:
                         end_date += timedelta(days=3)
                     else:
-                        print(extra_hours_save)
-                        print(extra_hours)
-                        print(start_date)
-                        if extra_hours_save > float(set_hours_work):
-                            extra_hours_save = (float(extra_hours_save) % float(set_hours_work))
+                        if float(extra_hours) + float(extra_hours_save) >= float(set_hours_work):
+                            extra_hours_save = float(set_hours_work) + float(time_out_choice)
                             end_date += timedelta(days=1)
                         else:
-                            extra_hours_save += float(extra_hours)
-                            if extra_hours_save > float(set_hours_work):
-                                extra_hours_save = (float(extra_hours_save) % float(set_hours_work))
-                                end_date += timedelta(days=1)
-                            else:
-                                end_date = start_date
-
+                            extra_hours_save = float(set_hours_work) + float(time_out_choice)
 
             else:
                 days = float(extra_hours)//float(set_hours_work)
                 time_out_choice = (float(extra_hours) % float(set_hours_work)) + time_out
                 if weekday == 4:
-                    end_date += timedelta(days=3)
+                    end_date += timedelta(days=2) + timedelta(days=days)
+
                 else:
                     end_date = start_date  + timedelta(days=days)
-                
+                    if end_date.weekday() in [5, 6]:
+                        end_date += timedelta(days=2)
+                        
             if request.POST['dateoff']:
                 date_off = request.POST['dateoff']
                 if end_date == datetime.strptime(str(date_off).replace('/','-'), '%Y-%m-%d'):
