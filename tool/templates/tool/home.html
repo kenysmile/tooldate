@@ -4,23 +4,18 @@
 
 {% block content %}
 
-<!-- <form method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Save</button>
-</form> -->
 <form method="post" action="/" enctype="multipart/form-data">
     {% csrf_token %}
     <div style="padding: 80px;">
-        <label for="dayoff" style="width:150px;height: 50px">Date Off</label>
+        <label for="dayoff" style="width:150px;height: 50px">Ngày nghỉ</label>
         <textarea type="text" name="dateoff" placeholder="2022/01/01"></textarea></br>
-        <label for="lst_extra_hours" style="width:150px;height: 50px;">Extra Hours</label>
+        <label for="lst_extra_hours" style="width:150px;height: 50px;">Danh sách giờ</label>
         <textarea type="text" name="lst_extra_hours" placeholder="1,5-2,5-3,5" rows="7" cols="3"></textarea></br>
-        <label for="startdate" style="width:150px;height: 50px">Start Date</label>
+        <label for="startdate" style="width:150px;height: 50px">Ngày Start</label>
         <input type="text" name="startdate" placeholder="2022/01/01"></br>
-        <label for="sethourswork" style="width:150px;height: 50px">Set Hours Work</label>
+        <label for="sethourswork" style="width:150px;height: 50px">Số giờ làm việc/Ngày</label>
         <input type="text" name="sethourswork" value=8></br>
-        <button type="submit", name="save">Apply</button>
+        <button type="submit", name="save">Tính</button>
     </div>
 </form>
 {% endblock %}
