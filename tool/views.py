@@ -29,6 +29,10 @@ def create_tool_date(request):
         convert_start_date = datetime.strptime(tool_date.start_date, '%Y-%m-%d')
         start_date = convert_start_date
         time_out = 0
+        lst_dateoff = []
+        if request.POST['dateoff']:
+            for date_off in str(request.POST['dateoff']).split('\r\n'):
+                lst_dateoff.append(str(date_off).replace('/','-'))
         for extra_hours in str(tool_date.lst_extra_hours).split('\r\n'):
             end_date = start_date
             extra_hours = str(extra_hours).replace(",",".")
@@ -38,7 +42,6 @@ def create_tool_date(request):
                 time_out_choice = float(extra_hours) + time_out
                 if float(time_out_choice) >= float(set_hours_work):
                     if float(time_out_choice) > float(set_hours_work):
-
                         days = float(time_out_choice)//float(set_hours_work)
                         time_out_choice = (float(time_out_choice) % float(set_hours_work))
                         if weekday == 4:
@@ -48,7 +51,6 @@ def create_tool_date(request):
                     else:
                         days = 0
                         time_out_choice = 0
-                        
                 else:
                     end_date = end_date
             else:
@@ -68,32 +70,26 @@ def create_tool_date(request):
                     if weekday == 4:
                         end_date += timedelta(days=2) + timedelta(days=days)
                     else:
-
                         if end_date.weekday() in [5, 6]:
                             end_date += timedelta(days=2) + timedelta(days=days)
-
                         else:
                             end_date += timedelta(days=days)
                             if end_date.weekday() in [5, 6]:
                                 end_date += timedelta(days=2) 
-                if request.POST['dateoff']:
-                    for dateoff in str(request.POST['dateoff']).split('\r\n'):
-                        if end_date == datetime.strptime(str(dateoff).replace('/','-'), '%Y-%m-%d'):
-                            weekday_week = end_date.weekday()
-                            if weekday_week == 4:
-                                end_date += timedelta(days=3)    
-                            else:    
-                                end_date += timedelta(days=1)   
             if request.POST['dateoff']:
                 for date_off in str(request.POST['dateoff']).split('\r\n'):
                     if end_date == datetime.strptime(str(date_off).replace('/','-'), '%Y-%m-%d'):
                         weekday = end_date.weekday()
                         if weekday == 4:
-                            start_date += timedelta (days=3)
+                            # start_date += timedelta(days=3)
                             end_date += timedelta(days=3)    
                         else:    
                             end_date += timedelta(days=1)   
-             
+                    if start_date == datetime.strptime(str(date_off).replace('/','-'), '%Y-%m-%d'):
+                        if weekday == 4:
+                            start_date += timedelta(days=3)    
+                        else:    
+                            start_date += timedelta(days=1)   
             tool_date_details = ToolDateDetails.objects.create(tool_date=tool_date, name=tool_date.pk, 
                                                    start_date=start_date, end_date=end_date,
                                                    extra_hours=extra_hours, time_out=time_out_choice,
