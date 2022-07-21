@@ -64,15 +64,18 @@ def create_tool_date(request):
                     elif (time_out_choice // float(set_hours_work)) == 1:
                         day_time_out_choice =(float(time_out_choice) // float(set_hours_work))
                         time_out_choice = 0
-
                     days =(float(extra_hours)//float(set_hours_work)) + day_time_out_choice
                     if weekday == 4:
                         end_date += timedelta(days=2) + timedelta(days=days)
                     else:
+
                         if end_date.weekday() in [5, 6]:
                             end_date += timedelta(days=2) + timedelta(days=days)
+
                         else:
                             end_date += timedelta(days=days)
+                            if end_date.weekday() in [5, 6]:
+                                end_date += timedelta(days=2) 
                 if request.POST['dateoff']:
                     for dateoff in str(request.POST['dateoff']).split('\r\n'):
                         if end_date == datetime.strptime(str(dateoff).replace('/','-'), '%Y-%m-%d'):
@@ -81,6 +84,16 @@ def create_tool_date(request):
                                 end_date += timedelta(days=3)    
                             else:    
                                 end_date += timedelta(days=1)   
+            if request.POST['dateoff']:
+                for date_off in str(request.POST['dateoff']).split('\r\n'):
+                    if end_date == datetime.strptime(str(date_off).replace('/','-'), '%Y-%m-%d'):
+                        weekday = end_date.weekday()
+                        if weekday == 4:
+                            start_date += timedelta (days=3)
+                            end_date += timedelta(days=3)    
+                        else:    
+                            end_date += timedelta(days=1)   
+             
             tool_date_details = ToolDateDetails.objects.create(tool_date=tool_date, name=tool_date.pk, 
                                                    start_date=start_date, end_date=end_date,
                                                    extra_hours=extra_hours, time_out=time_out_choice,
@@ -93,7 +106,5 @@ def create_tool_date(request):
                 if start_date.weekday() in [5, 6]:
                     start_date += timedelta(days=2)
                     end_date += timedelta(days=2)
-                # else:
-                #     start_date += timedelta(days=days)
-                #     end_date += timedelta(days=days)
+
         return redirect('tool_date_details', pk=tool_date.pk)
