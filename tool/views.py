@@ -30,7 +30,8 @@ def create_tool_date(request):
         start_date = convert_start_date
         time_out = 0
         lst_dateoff = []
-        days_0 = None
+        days_0 = 0
+        days_1 = 0
         if request.POST['dateoff']:
             for date_off in str(request.POST['dateoff']).split('\r\n'):
                 lst_dateoff.append(str(date_off).replace('/','-'))
@@ -50,27 +51,25 @@ def create_tool_date(request):
                         else:
                             end_date += timedelta(days=days)
                     else:
+                        days_1 = 1
                         time_out_choice = 0
-                        end_date += timedelta(days=1)
-                        if end_date.weekday() in [5, 6]:
-                            end_date += timedelta(days=2)
                 else:
                     end_date = end_date
             else:
                 if float(extra_hours) == float(set_hours_work):
+                    if (float(extra_hours) + time_out) > float(set_hours_work):
+                        end_date += timedelta(days=1)
                     time_out_choice = (float(extra_hours) + time_out) - float(set_hours_work)
-                    end_date += timedelta(days=1)
-                    if end_date.weekday() in [5, 6]:
-                        end_date += timedelta(days=2)
+                    days_1 = 1
+
                 else:
                     day_time_out_choice = 0
                     time_out_choice = (float(extra_hours) % float(set_hours_work)) + time_out
-                    
                     if time_out_choice > float(set_hours_work):
                         day_time_out_choice =(float(time_out_choice) // float(set_hours_work))
                         time_out_choice = float(time_out_choice) % float(set_hours_work)
                     elif (time_out_choice // float(set_hours_work)) == 1:
-                        day_time_out_choice =(float(time_out_choice) // float(set_hours_work))
+                        day_time_out_choice =(float(time_out_choice) // float(set_hours_work) - 1)
                         time_out_choice = 0
                     days =(float(extra_hours)//float(set_hours_work)) + day_time_out_choice
                     if weekday == 4:
@@ -79,9 +78,10 @@ def create_tool_date(request):
                         if end_date.weekday() in [5, 6]:
                             end_date += timedelta(days=2) + timedelta(days=days)
                         else:
+                            days_0 = 1
                             end_date += timedelta(days=days)
                             if end_date.weekday() in [5, 6]:
-                                end_date += timedelta(days=2) 
+                                end_date += timedelta(days=2)
             if request.POST['dateoff']:
                 for date_off in str(request.POST['dateoff']).split('\r\n'):
                     a = datetime.strptime(str(date_off).replace('/','-'), '%Y-%m-%d')
@@ -109,10 +109,13 @@ def create_tool_date(request):
             time_out = time_out_choice
             start_date = end_date
             if time_out == 0:
-                if days_0 != None:
-                    start_date = start_date + timedelta(days=1)
-                else:
+                if days_0 == 1:
+                    if float(extra_hours) > float(set_hours_work):
+                        start_date = start_date + timedelta(days=1)
+                else: 
                     start_date = start_date
+                if days_1 == 1:
+                    start_date = start_date + timedelta(days=1)
                 if start_date.weekday() in [5, 6]:
                     start_date += timedelta(days=2)
                     end_date += timedelta(days=2)
