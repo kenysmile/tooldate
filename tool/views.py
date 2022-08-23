@@ -58,9 +58,24 @@ def create_tool_date(request):
             else:
                 if float(extra_hours) == float(set_hours_work):
                     if (float(extra_hours) + time_out) > float(set_hours_work):
-                        end_date += timedelta(days=1)
+                        days = (float(extra_hours) + time_out)// float(set_hours_work)
+                        end_date += timedelta(days)
                     time_out_choice = (float(extra_hours) + time_out) - float(set_hours_work)
-                    days_1 = 1
+                    days =(float(extra_hours)//float(set_hours_work)) + day_time_out_choice
+                    print(days)
+                    if time_out > 0:
+                        if weekday == 4:
+                            end_date += timedelta(days=2)
+                        else:
+                            if end_date.weekday() in [5, 6]:
+                                end_date += timedelta(days=2)
+                            else:
+                                days_0 = 1
+                                end_date += timedelta(days=days)
+                                if end_date.weekday() in [5, 6]:
+                                    end_date += timedelta(days=2)
+                    elif time_out == 0:
+                        days_1 = 1
 
                 else:
                     day_time_out_choice = 0
